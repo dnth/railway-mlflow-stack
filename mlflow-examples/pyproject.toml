@@ -9,7 +9,7 @@ authors = [
 ]
 keywords = ["mlflow", "machine-learning", "tracking", "template", "railway"]
 dependencies = [
-	"mlflow>=3.3.1",
+	"mlflow>=3.14.0",
 	"openai>=1.0.0",
 ]
 

@@ -66,11 +66,11 @@ The only environment variables you'll want to mess around with are:
 |----------------|---------|---------------------------------|-----------------|
 | `AUTH_USERNAME` | Caddy   | Your basic authentication username | `admin`         |
 | `AUTH_PASSWORD` | Caddy   | Your basic authentication password | Auto-generated  |
-| `MLFLOW_VERSION` | MLflow   | The version of MLflow you want to deploy | N/A (defaults to v3.3.1)  |
+| `MLFLOW_VERSION` | MLflow   | The version of MLflow you want to deploy | N/A (defaults to 3.14.0)  |
 
 #### Version Control
 
-If you'd like to lock your install to a newer / older version, you can pin the version of MLflow you'd like to deploy by setting an environment variable (`MLFLOW_VERSION`) on the MLflow Service. by default the template uses **v3.3.1**.
+If you'd like to lock your install to a newer / older version, you can pin the version of MLflow you'd like to deploy by setting an environment variable (`MLFLOW_VERSION`) on the MLflow Service. by default the template uses **3.14.0**.
 
 #### Authentication via Caddy
 
