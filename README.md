@@ -67,10 +67,23 @@ The only environment variables you'll want to mess around with are:
 | `AUTH_USERNAME` | Caddy   | Your basic authentication username | `admin`         |
 | `AUTH_PASSWORD` | Caddy   | Your basic authentication password | Auto-generated  |
 | `MLFLOW_VERSION` | MLflow   | The version of MLflow you want to deploy | N/A (defaults to 3.14.0)  |
+| `MLFLOW_ENABLE_WORKSPACES` | MLflow | Enables MLflow workspace scoping | `true` |
 
 #### Version Control
 
 If you'd like to lock your install to a newer / older version, you can pin the version of MLflow you'd like to deploy by setting an environment variable (`MLFLOW_VERSION`) on the MLflow Service. by default the template uses **3.14.0**.
+
+#### MLflow Workspaces
+
+Workspace mode is enabled by default with `MLFLOW_ENABLE_WORKSPACES=true` on the MLflow service. Workspaces let you scope experiments, registered models, prompts, and artifacts without changing the Caddy authentication layer.
+
+Clients can choose a workspace by setting `MLFLOW_WORKSPACE` before running MLflow code:
+
+```bash
+export MLFLOW_WORKSPACE=team-a
+```
+
+If no workspace is set, MLflow uses the default workspace.
 
 #### Authentication via Caddy
 
