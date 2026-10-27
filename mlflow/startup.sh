@@ -1,6 +1,8 @@
 #!/bin/sh
+set -e
+echo 'upgrading mlflow database schema...'
+mlflow db upgrade "$DB_URL"
 echo 'starting mlflow server...'
-
 exec mlflow server \
     --backend-store-uri $DB_URL \
     --serve-artifacts \
