@@ -66,12 +66,30 @@ The only environment variables you'll want to mess around with are:
 |----------------|---------|---------------------------------|-----------------|
 | `AUTH_USERNAME` | Caddy   | Your basic authentication username | `admin`         |
 | `AUTH_PASSWORD` | Caddy   | Your basic authentication password | Auto-generated  |
-| `MLFLOW_VERSION` | MLflow   | The version of MLflow you want to deploy | N/A (defaults to 3.14.0)  |
 | `MLFLOW_ENABLE_WORKSPACES` | MLflow | Enables MLflow workspace scoping | `true` |
 
 #### Version Control
 
-If you'd like to lock your install to a newer / older version, you can pin the version of MLflow you'd like to deploy by setting an environment variable (`MLFLOW_VERSION`) on the MLflow Service. by default the template uses **3.14.0**.
+The MLflow version is pinned in a committed lockfile, not by an environment variable. `mlflow/requirements.in` lists the direct dependencies and `mlflow/requirements.lock` is the uv-compiled, fully resolved set that the image installs. The template currently ships **MLflow 3.17.2** (`sqlalchemy 2.1.6`, `psycopg 3.3.6`, `psycopg2-binary 2.9.13`, `alembic 1.20.1`).
+
+Locking every transitive dependency is deliberate. Resolving at build time means an unrelated upstream release can land in a rebuild of unchanged code — a rebuild of this template on 2026-10-27 resolved SQLAlchemy 2.1 without a psycopg3 driver and the server stopped at startup.
+
+To bump MLflow:
+
+1. Edit `mlflow/requirements.in`.
+2. Re-compile the lockfile targeting the runtime the image uses:
+
+   ```bash
+   uv pip compile requirements.in \
+     --python-version 3.12 \
+     --python-platform x86_64-unknown-linux-gnu \
+     -o requirements.lock
+   ```
+
+   Run it inside `mlflow/`. Use `--upgrade` when you want transitive dependencies to move as well.
+3. Commit both files. The next build installs exactly that lockfile.
+
+The container runs `mlflow db upgrade "$DB_URL"` before starting the server, so a version bump also applies the schema migrations it needs. Take a database backup first; migrations are not rolled back automatically.
 
 #### MLflow Workspaces
 
