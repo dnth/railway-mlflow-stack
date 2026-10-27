@@ -6,7 +6,7 @@ ARG MLFLOW_VERSION
 
 COPY --from=ghcr.io/astral-sh/uv:0.6 /uv /usr/local/bin/uv
 
-RUN uv pip install --system --no-cache "mlflow==${MLFLOW_VERSION}" psycopg2-binary boto3
+RUN uv pip install --system --no-cache "mlflow==${MLFLOW_VERSION}" "psycopg[binary]" psycopg2-binary boto3
 
 RUN mkdir /scripts/
 COPY ./startup.sh /scripts/startup.sh
